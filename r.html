@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Strawpoll type website</title>
+    </head>
+    <body>
+        <div id="box" class="box">
+            <form id="voting" action="voting.php" method="post">
+                <input type="submit">
+            </form>
+        </div>
+    </body>
+    <style>
+        .box {
+            border-style: none;
+            margin: auto;
+            width: 60%;
+            background-color: beige;
+        }
+        img {
+            width: 300px;
+            height: 300px;
+        }
+    </style>
+    <script>
+        
+        let params = (new URL(document.location)).searchParams;
+        let id = params.get('id');
+        const entry = "polls/" + id + ".json";
+
+        if ( typeof window.location.search != "undefined" ) {
+            fetch(entry).then(response => {
+                //console.log(response.json());
+                return response.json();
+                })
+                .then(data => contructPoll(data))
+        }
+
+        function contructPoll(data) {
+            const elem = document.getElementById('voting');
+
+            let htmlData = '<h1>' + data['title'] + '</h1><br>\n <input type="hidden" name="id" value="' + entry +'">\n';
+            const total = totalVotes(data);
+
+            for (let i = 0; i < Object.keys(data['content']).length; i++) {
+                let percentage = (data['content'][i]['votes']/total) * 100;
+
+                htmlData += '<input type="radio" name="voteB" value="' + i + '"><img src="' + data['content'][i]['name'] + '"><br><div style="background-color:red;width:'+ percentage +'%;"><p>' + data['content'][i]['votes'] + '</p></div><br>\n';         
+            }
+            elem.insertAdjacentHTML('afterbegin', htmlData);
+        }
+
+        function totalVotes(data) {
+            let total = 0;
+            for (let i = 0; i < Object.keys(data['content']).length; i++) {
+                total += data['content'][i]['votes'];
+            }
+            return total;
+        }
+    </script>
+</html>

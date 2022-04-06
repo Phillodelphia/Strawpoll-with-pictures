@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Strawpoll Type Website</title>
+    </head>
+    <body>
+        <div class="box">
+            <h1>Poll Creation</h1>
+            <form action="createPoll.php" method="post" enctype="multipart/form-data">
+                <label>Title:</label><br>
+                <input id="title" name="title" placeholder="Type your question"></input><br>
+                <label for="title"></label>
+                <label>Poll Options:</label><br>
+                <input type="file" multiple id="pollOp" name="pollOp[]" placeholder="Type your question" accept="image/*"></input><br>
+                <input type="submit" id="submit" name="submit"></input>
+            </form>
+        </div>
+    </body>
+    <style>
+        .box {
+            border-style: none;
+            margin: auto;
+            width: 60%;
+            background-color: beige;
+        }
+    </style>
+</html>
