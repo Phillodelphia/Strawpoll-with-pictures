@@ -42,10 +42,18 @@
             let htmlData = '<h1>' + data['title'] + '</h1><br>\n <input type="hidden" name="id" value="' + entry +'">\n';
             const total = totalVotes(data);
 
+            if (data['userId'] == getCookie("PHPSESSID")) {
+                    htmlData += '<p>Total votes: ' + total + '</p>'
+            }    
+
             for (let i = 0; i < Object.keys(data['content']).length; i++) {
                 let percentage = (data['content'][i]['votes']/total) * 100;
+                htmlData += '<input type="radio" name="voteB" value="' + i + '"><img src="' + data['content'][i]['name'] + '"><br>\n';
 
-                htmlData += '<input type="radio" name="voteB" value="' + i + '"><img src="' + data['content'][i]['name'] + '"><br><div style="background-color:red;width:'+ percentage +'%;"><p>' + data['content'][i]['votes'] + '</p></div><br>\n';         
+                if (data['userId'] == getCookie("PHPSESSID")) {
+                    htmlData += '<div style="background-color:red;width:'+ percentage +'%;"><p>' + data['content'][i]['votes'] + '</p></div><br>\n'
+                }       
+                
             }
             elem.insertAdjacentHTML('afterbegin', htmlData);
         }
@@ -56,6 +64,15 @@
                 total += data['content'][i]['votes'];
             }
             return total;
+        }
+
+        function getCookie(cookieName) {
+            let cookie = {};
+            document.cookie.split(';').forEach(function(el) {
+                let [key,value] = el.split('=');
+                cookie[key.trim()] = value;
+            })
+            return cookie[cookieName];
         }
     </script>
 </html>

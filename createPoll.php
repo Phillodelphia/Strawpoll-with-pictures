@@ -1,11 +1,13 @@
 <?php
+session_start();
+
 $target_dir = "uploads/";
 
 $fi = new FilesystemIterator(__DIR__ . '/polls', FilesystemIterator::SKIP_DOTS);
 
 $title = $_POST['title'];
 trim($title);
-$content = array("id"=>iterator_count($fi)+1, "title"=>$title);
+$content = array("id"=>iterator_count($fi)+1, "title"=>htmlspecialchars($title));
 $total = count($_FILES['pollOp']['name']);
 
 for( $i=0 ; $i < $total ; $i++ ) {
@@ -39,10 +41,23 @@ for( $i=0 ; $i < $total ; $i++ ) {
     }
   }
 }
+
+//$value = hash("sha256", $content['id'] + 'polls/' . $content['id'] . '.json' + $total);
+//setcookie("ValidatePollCreator", $value, time()+30);
+
+//set cookie
+$content['userId'] = $_COOKIE['PHPSESSID'];
+print_r($_COOKIE);
+
 //write result to json file
 $fp = fopen('polls/' . $content['id'] . '.json', 'w');
 fwrite($fp, json_encode($content));
 fclose($fp);
 
-header("Location: r.html?id=" . $content['id']);
+
+
+
+//header("Location: r.html?id=" . $content['id']);
+echo "<script>document.location = 'r.html?id=" . $content['id'] . "';</script>";
+
 ?>
