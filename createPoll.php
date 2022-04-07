@@ -42,22 +42,16 @@ for( $i=0 ; $i < $total ; $i++ ) {
   }
 }
 
-//$value = hash("sha256", $content['id'] + 'polls/' . $content['id'] . '.json' + $total);
-//setcookie("ValidatePollCreator", $value, time()+30);
+
 
 //set cookie
 $content['userId'] = $_COOKIE['PHPSESSID'];
-print_r($_COOKIE);
 
 //write result to json file
 $fp = fopen('polls/' . $content['id'] . '.json', 'w');
 fwrite($fp, json_encode($content));
 fclose($fp);
 
-
-
-
-//header("Location: r.html?id=" . $content['id']);
 echo "<script>document.location = 'r.html?id=" . $content['id'] . "';</script>";
 
 ?>
