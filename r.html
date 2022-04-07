@@ -46,9 +46,15 @@
                     htmlData += '<p>Total votes: ' + total + '</p>'
             }    
 
+            if (getCookie("User") == null) {
+                htmlData += '<p>What\'s your username?</p><input type="text" name="username" required><br><br>\n';
+            }
+            
             for (let i = 0; i < Object.keys(data['content']).length; i++) {
                 let percentage = (data['content'][i]['votes']/total) * 100;
+                
                 htmlData += '<input type="radio" name="voteB" value="' + i + '"><img src="' + data['content'][i]['name'] + '"><br>\n';
+
 
                 if (data['userId'] == getCookie("PHPSESSID")) {
                     htmlData += '<div style="background-color:red;width:'+ percentage +'%;"><p>' + data['content'][i]['votes'] + '</p></div><br>\n'
